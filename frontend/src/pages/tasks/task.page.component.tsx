@@ -19,7 +19,7 @@ interface ITask {
     title: string;
     description?: string;
     task_labels: ITaskLabel[];
-}
+} 
 
 export const Tasks = () => {
     const [searchTerm, setSearchTerm] = useState('')
