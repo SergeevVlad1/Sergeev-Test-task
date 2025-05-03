@@ -1,0 +1,5 @@
+@import '../../styles/mixins.scss';
+
+.header_wrapper {
+  @include displayFlex($alignItems: center, $justifyContent: center, $gap: 1rem);
+}

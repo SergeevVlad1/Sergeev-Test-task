@@ -1,0 +1,10 @@
+@import '../../styles/mixins.scss';
+
+.users_wrapper{
+  @include displayFlex($justifyContent: center, $flexDirection: column, $alignItems: center);
+  
+}
+
+.user_wrapper{
+  color: #000;
+}
