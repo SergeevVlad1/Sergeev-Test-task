@@ -14,7 +14,6 @@ export interface ITask {
 }
 
 export const addTaskLabel = async (task: ITask, labelId: string) => {
-    // Гарантируем, что task_labels — массив
     const taskLabels = Array.isArray(task.task_labels) ? task.task_labels : [];
     const exists = taskLabels.some((l: ITaskLabel) => l.label_id === labelId);
     if (!exists) {

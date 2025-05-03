@@ -16,14 +16,12 @@ export const TasksList: React.FC<TasksListProps> = ({ tasks }) => {
     const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
     const queryClient = useQueryClient();
 
-    // Fetch labels with proper typing
     const { data: labels, isLoading: areLabelsLoading } = useQuery({
         queryKey: ['labels'],
         queryFn: useGetLabels,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: 1000 * 60 * 5,
     });
 
-    // Delete mutation with modern syntax
     const { mutateAsync: deleteTask, isPending: isDeleting } = useMutation({
         mutationFn: (taskId: string) => deleteTaskFn(taskId),
         onSuccess: () => {
@@ -83,7 +81,6 @@ export const TasksList: React.FC<TasksListProps> = ({ tasks }) => {
                                     <LabelList
                                         labels={labels}
                                         task={task}
-                                        // onLabelUpdate={() => queryClient.invalidateQueries(['labels'])}
                                     />
                                 )}
                             </div>
@@ -113,7 +110,6 @@ export const TasksList: React.FC<TasksListProps> = ({ tasks }) => {
                                         taskId={task.id}
                                         initialTitle={task.title}
                                         initialDescription={task.description}
-                                        // initialTaskLabels={task.task_labels || []}
                                         onTaskCreated={handleTaskCreated}
                                     />
                                 </div>
