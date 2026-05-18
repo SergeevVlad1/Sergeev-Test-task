@@ -25,20 +25,20 @@ export const Tasks = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedLabel, setSelectedLabel] = useState<string | null>(null)
 
-    const { data: tasks, error, isLoading, refetch } = useQuery<ITask[]>({
+    const { data: tasks, error, isLoading, refetch } = useQuery<any>({
         queryFn: useGetTask,
         queryKey: ['tasks'],
     })
 
-    const { data: labels, refetch: refetchLabels } = useQuery({
+    const { data: labels, refetch: refetchLabels } = useQuery<any>({
         queryFn: useGetLabels,
         queryKey: ['labels'],
     })
 
-    const filteredTasks = tasks?.filter((task: ITask) => {
+    const filteredTasks = tasks?.tasks?.filter((task: ITask) => {
         const matchesTitle = task.title.toLowerCase().includes(searchTerm.toLowerCase())
         const matchesLabel = selectedLabel
-            ? task.task_labels?.some((label: ITaskLabel) => label.label_id === selectedLabel)
+            ? task.task_labels?.some((label: ITaskLabel) => String(label.label_id) === String(selectedLabel))
             : true
         return matchesTitle && matchesLabel
     }) || []
@@ -52,38 +52,61 @@ export const Tasks = () => {
         throw new Error(`${error}`)
     }
 
-    console.log(labels?.map((label: ILabel) => (
-        label.caption
-    )))
-
-    if (isLoading) return <div>Loading...</div>
-
     return (
-        <div className={styles['users_wrapper']}>
-            <div className={styles['user_wrapper']}>
-                <input
-                    type="text"
-                    placeholder="Search tasks by title"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
-                />
-                <select
-                    value={selectedLabel || ''}
-                    onChange={(e) => setSelectedLabel(e.target.value || null)}
-                    style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
-                >
-                    <option value="">All Labels</option>
-                    {labels?.map((label: ILabel) => (
-                        <option key={label.id} value={label.id}>
-                            {label.caption}
-                        </option>
-                    ))}
-                    
-                </select>
-                
-                <TasksList tasks={filteredTasks} />
+        <div className="container-premium">
+            <header className={styles['board_header']}>
+                <div>
+                    <h1 className="page-title">Workspace Tasks</h1>
+                    <p className="page-subtitle">Track, delegate, and manage sprints in real time.</p>
+                </div>
+                <div className={styles['board_stats']}>
+                    <div className={styles['stat_card']}>
+                        <span className={styles['stat_num']}>{tasks?.tasks?.length || 0}</span>
+                        <span className={styles['stat_label']}>Total Tasks</span>
+                    </div>
+                    <div className={styles['stat_card']}>
+                        <span className={styles['stat_num']} style={{ color: 'var(--accent-primary)' }}>
+                            {filteredTasks.length}
+                        </span>
+                        <span className={styles['stat_label']}>Filtered</span>
+                    </div>
+                </div>
+            </header>
+
+            {/* Dashboard Control Bar */}
+            <div className={`card-premium ${styles['controls_bar']}`}>
+                <div className={styles['search_input_wrapper']}>
+                    <span className={styles['input_icon']}>🔍</span>
+                    <input
+                        type="text"
+                        placeholder="Search tasks by title..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className={styles['search_input']}
+                    />
+                </div>
+                <div className={styles['filter_select_wrapper']}>
+                    <span className={styles['input_icon']}>🏷️</span>
+                    <select
+                        value={selectedLabel || ''}
+                        onChange={(e) => setSelectedLabel(e.target.value || null)}
+                        className={styles['filter_select']}
+                    >
+                        <option value="">All Category Labels</option>
+                        {labels?.labels?.map((label: ILabel) => (
+                            <option key={label.id} value={label.id}>
+                                {label.caption}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
+
+            {isLoading ? (
+                <div className={styles['loading_state']}>Loading workspace task boards...</div>
+            ) : (
+                <TasksList tasks={filteredTasks} />
+            )}
         </div>
     )
 }

@@ -1,5 +1,93 @@
-@import '../../styles/mixins.scss';
-
 .header_wrapper {
-  @include displayFlex($alignItems: center, $justifyContent: center, $gap: 1rem);
+  background: rgba(13, 18, 36, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.85rem 0;
+}
+
+.header_container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header_brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.header_icon {
+  font-size: 1.35rem;
+  filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.6));
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+.header_title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 30%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header_badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  padding: 1px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.header_nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav_link {
+  font-size: 0.9rem;
+  font-weight: 550;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  position: relative;
+
+  &:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  &.active {
+    color: #ffffff;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.05);
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.6);
+    }
+  }
 }

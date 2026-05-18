@@ -1,60 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  /* color: rgba(255, 255, 255, 0.87); */
-  background-color: #fff;/
+  /* Modern Dark Cyberpunk / SaaS Color Palette */
+  --bg-primary: #070913;
+  --bg-secondary: #0d1224;
+  --bg-card: rgba(18, 24, 47, 0.6);
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(139, 92, 246, 0.25);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
 
-  font-synthesis: none;
+  /* Gradients and Colors */
+  --accent-primary: #8b5cf6;
+  --accent-secondary: #3b82f6;
+  --accent-pink: #ec4899;
+  --accent-success: #10b981;
+  --accent-danger: #f43f5e;
+  
+  --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+  --gradient-accent-hover: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  --gradient-card: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+  
+  --shadow-glow: 0 0 25px rgba(139, 92, 246, 0.15);
+  --shadow-glow-success: 0 0 25px rgba(16, 185, 129, 0.15);
+  
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 0%, #17163c 0%, #070913 70%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  overflow-x: hidden;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Custom premium transitions and animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Page containers & Typography styling */
+.container-premium {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.page-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #f8fafc 30%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Premium Layout Grid: Left (Forms) / Right (Content List) */
+.layout-split {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 968px) {
+  .layout-split {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Glassmorphism Card Style */
+.card-premium {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: var(--gradient-card);
+  pointer-events: none;
+}
+
+.card-premium:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+/* Button & Form Controls */
+.btn-primary {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--gradient-accent);
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.btn-primary:hover:not(:disabled) {
+  background: var(--gradient-accent-hover);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4), var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Input Fields styling */
+.input-premium-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-premium {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: rgba(13, 18, 36, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.input-premium:focus {
+  border-color: var(--accent-primary);
+  background: rgba(13, 18, 36, 1);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15), var(--shadow-glow);
+}
+
+.input-premium::placeholder {
+  color: var(--text-muted);
+}
+
+.error-text {
+  color: var(--accent-danger);
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }

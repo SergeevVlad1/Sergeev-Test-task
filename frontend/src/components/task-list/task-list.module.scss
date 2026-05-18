@@ -1,95 +1,178 @@
-.tasksContainer {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+.form_title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
 }
 
-.taskFormWrapper {
-    margin-bottom: 30px;
+.form_desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.tasks_list_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .tasksList {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .taskItem {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1.75rem !important;
+
+  &:hover {
+    border-color: rgba(139, 92, 246, 0.2) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(139, 92, 246, 0.08) !important;
+  }
 }
 
 .taskContent {
-    margin-bottom: 15px;
+  margin-bottom: 1.5rem;
+}
+
+.taskHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
 }
 
 .taskTitle {
-    margin: 0 0 10px 0;
-    color: #333;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.25px;
+}
+
+.taskId {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .taskDescription {
-    margin: 0 0 15px 0;
-    color: #666;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.taskLabelsSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1rem;
+}
+
+.labelsLabel {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
 }
 
 .taskActions {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .editButton, .deleteButton {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .editButton {
-    background: #4CAF50;
-    color: white;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.08);
 
-    &:hover:not(:disabled) {
-        background: #3e8e41;
-    }
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
 }
 
 .deleteButton {
-    background: #f44336;
-    color: white;
+  background: rgba(244, 63, 94, 0.1);
+  color: var(--accent-danger);
+  border-color: rgba(244, 63, 94, 0.15);
 
-    &:hover:not(:disabled) {
-        background: #d32f2f;
-    }
+  &:hover:not(:disabled) {
+    background: rgba(244, 63, 94, 0.2);
+    border-color: rgba(244, 63, 94, 0.3);
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
 }
 
 .editForm {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
 }
 
 .emptyState {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-    background: #f9f9f9;
-    border-radius: 8px;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px dashed var(--border-color);
+  border-radius: 16px;
+  color: var(--text-secondary);
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.5rem;
+  }
 }
 
 .error {
-    color: #d32f2f;
-    padding: 20px;
-    background: #ffebee;
-    border-radius: 8px;
-    text-align: center;
+  color: var(--accent-danger);
+  padding: 1.5rem;
+  background: rgba(244, 63, 94, 0.08);
+  border: 1px solid rgba(244, 63, 94, 0.15);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
 }

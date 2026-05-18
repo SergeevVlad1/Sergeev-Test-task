@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { EInputTypes, Input } from "../input/input.component";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCreateUser } from "../../api/services/user.service";
 import styles from '../default-form/default-form.component.module.scss'
 
@@ -10,7 +11,7 @@ export interface ICreateUserForm {
 }
 
 export const CreateUserForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<ICreateUserForm>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ICreateUserForm>({
         mode: 'onChange',
         defaultValues: {
             firstName: '',
@@ -19,12 +20,23 @@ export const CreateUserForm = () => {
         }
     });
 
-    const onSubmit: SubmitHandler<ICreateUserForm> = async(data, event) => {
+    const queryClient = useQueryClient();
+
+    const { mutateAsync: createUser, isPending } = useMutation({
+        mutationFn: (data: ICreateUserForm) => useCreateUser(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+            reset();
+        },
+        onError: (error) => {
+            console.error('Ошибка при создании пользователя:', error);
+        }
+    });
+
+    const onSubmit: SubmitHandler<ICreateUserForm> = async (data, event) => {
         event?.preventDefault()
-        const createUser = useCreateUser
         try {
-            const response = await createUser(data);
-            return response
+            await createUser(data);
         } catch (error) {
             console.error('Ошибка при создании пользователя:', error);
         }
@@ -33,41 +45,59 @@ export const CreateUserForm = () => {
     return (
         <form className={styles['create_wrapper_form']} onSubmit={handleSubmit(onSubmit)}>
             <ul className={styles['create_ul_form']}>
-                <Input 
-                    className={styles['create_input_form']} 
-                    {...register('firstName', { 
-                        required: 'Поле firstName обязательно для заполнения', 
-                        pattern: {
-                            value: /^[A-Za-zА-Яа-яЁё\s-]+$/,
-                            message: 'Invalid firstName'
-                        } 
-                    })}  
-                    type={EInputTypes.TEXT} 
-                    placeholder="first name" 
-                />
-                {errors.firstName && <p style={{color: 'red'}}>{errors.firstName.message}</p>}
-                
-                <Input 
-                    className={styles['create_input_form']} 
-                    {...register('lastName', { 
-                        required: 'Поле lastName обязательно для заполнения' 
-                    })} 
-                    type={EInputTypes.TEXT} 
-                    placeholder="last name" 
-                />
-                {errors.lastName && <p style={{color: 'red'}}>{errors.lastName.message}</p>}
-                
-                <Input 
-                    className={styles['create_input_form']} 
-                    {...register('bio', { 
-                        required: 'Поле bio обязательно для заполнения' 
-                    })} 
-                    type={EInputTypes.TEXT} 
-                    placeholder="bio" 
-                />
-                {errors.bio && <p className={styles['input_error']}>{errors.bio.message}</p>}
-                
-                <button type="submit">Создать</button>
+                <li style={{ listStyle: 'none' }}>
+                    <label className="input-label">First Name</label>
+                    <Input
+                        className={styles['create_input_form']}
+                        {...register('firstName', {
+                            required: 'First name is required',
+                            pattern: {
+                                value: /^[A-Za-zА-Яа-яЁё\s-]+$/,
+                                message: 'Only letters, spaces and hyphens allowed'
+                            }
+                        })}
+                        type={EInputTypes.TEXT}
+                        placeholder="e.g. John"
+                        onDisabled={isPending}
+                    />
+                    {errors.firstName && <p className={styles['input_error']}>{errors.firstName.message}</p>}
+                </li>
+
+                <li style={{ listStyle: 'none' }}>
+                    <label className="input-label">Last Name</label>
+                    <Input
+                        className={styles['create_input_form']}
+                        {...register('lastName', {
+                            required: 'Last name is required'
+                        })}
+                        type={EInputTypes.TEXT}
+                        placeholder="e.g. Doe"
+                        onDisabled={isPending}
+                    />
+                    {errors.lastName && <p className={styles['input_error']}>{errors.lastName.message}</p>}
+                </li>
+
+                <li style={{ listStyle: 'none' }}>
+                    <label className="input-label">Professional Bio</label>
+                    <Input
+                        className={styles['create_input_form']}
+                        {...register('bio', {
+                            required: 'Biography is required',
+                            minLength: {
+                                value: 5,
+                                message: 'Bio must be at least 5 characters long'
+                            }
+                        })}
+                        type={EInputTypes.TEXT}
+                        placeholder="e.g. Full-Stack Developer"
+                        onDisabled={isPending}
+                    />
+                    {errors.bio && <p className={styles['input_error']}>{errors.bio.message}</p>}
+                </li>
+
+                <button type="submit" disabled={isPending}>
+                    {isPending ? 'Onboarding...' : '➕ Onboard Teammate'}
+                </button>
             </ul>
         </form>
     );

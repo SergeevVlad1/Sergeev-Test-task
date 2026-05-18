@@ -1,10 +1,82 @@
-@import '../../styles/mixins.scss';
-
-.users_wrapper{
-  @include displayFlex($justifyContent: center, $flexDirection: column, $alignItems: center);
-  
+.form_title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
 }
 
-.user_wrapper{
-  color: #000;
+.form_desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.users_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  align-content: start;
+}
+
+.user_header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.avatar_circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.user_meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.user_name {
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.user_badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.user_bio {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 0.75rem;
+}
+
+.loading_state, .empty_state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }

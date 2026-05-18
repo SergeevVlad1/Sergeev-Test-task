@@ -36,6 +36,7 @@ export const TaskForm = ({
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['tasks'] });
             onTaskCreated?.();
+            reset();
         },
         onError: (error) => {
             console.error('Error creating task:', error);
@@ -80,44 +81,51 @@ export const TaskForm = ({
 
     return (
         <form className={styles['create_wrapper_form']} onSubmit={handleSubmit(onSubmit)}>
-            <Input
-                className={styles['create_input_form']}
-                {...register('title', {
-                    required: 'Title is required',
-                    minLength: {
-                        value: 3,
-                        message: 'Title must be at least 3 characters'
-                    }
-                })}
-                type={EInputTypes.TEXT}
-                placeholder="Title"
-                onDisabled={isMutationPending || isSubmitting}
-            />
-            {errors.title && <p className={styles.error}>{errors.title.message}</p>}
-            
-            <Input
-                className={styles['create_input_form']}
-                {...register('description', {
-                    required: 'Description is required',
-                    minLength: {
-                        value: 10,
-                        message: 'Description must be at least 10 characters'
-                    }
-                })}
-                type={EInputTypes.TEXTAREA}
-                placeholder="Description"
-                onDisabled={isMutationPending || isSubmitting}
-            />
-            {errors.description && <p className={styles.error}>{errors.description.message}</p>}
+            <ul className={styles['create_ul_form']}>
+                <li style={{ listStyle: 'none' }}>
+                    <label className="input-label">Task Title</label>
+                    <Input
+                        className={styles['create_input_form']}
+                        {...register('title', {
+                            required: 'Title is required',
+                            minLength: {
+                                value: 3,
+                                message: 'Title must be at least 3 characters'
+                            }
+                        })}
+                        type={EInputTypes.TEXT}
+                        placeholder="e.g. Implement Oauth Authentication"
+                        onDisabled={isMutationPending || isSubmitting}
+                    />
+                    {errors.title && <p className={styles['input_error']}>{errors.title.message}</p>}
+                </li>
+                
+                <li style={{ listStyle: 'none' }}>
+                    <label className="input-label">Task Description</label>
+                    <Input
+                        className={styles['create_input_form']}
+                        {...register('description', {
+                            required: 'Description is required',
+                            minLength: {
+                                value: 10,
+                                message: 'Description must be at least 10 characters'
+                            }
+                        })}
+                        type={EInputTypes.TEXT}
+                        placeholder="Provide details and expectations for the team..."
+                        onDisabled={isMutationPending || isSubmitting}
+                    />
+                    {errors.description && <p className={styles['input_error']}>{errors.description.message}</p>}
+                </li>
 
-            <button 
-                type="submit" 
-                disabled={isMutationPending || isSubmitting}
-                className={styles.submitButton}
-            >
-                {isMutationPending ? 'Processing...' : 
-                 useMethod === HttpMethodEnum.POST ? 'Create' : 'Update'}
-            </button>
+                <button 
+                    type="submit" 
+                    disabled={isMutationPending || isSubmitting}
+                >
+                    {isMutationPending ? 'Processing...' : 
+                     useMethod === HttpMethodEnum.POST ? '➕ Create Task' : '💾 Update Task'}
+                </button>
+            </ul>
         </form>
     );
 };

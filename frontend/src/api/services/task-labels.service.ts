@@ -14,32 +14,20 @@ export interface ITask {
 }
 
 export const addTaskLabel = async (task: ITask, labelId: string) => {
-    const taskLabels = Array.isArray(task.task_labels) ? task.task_labels : [];
-    const exists = taskLabels.some((l: ITaskLabel) => l.label_id === labelId);
-    if (!exists) {
-        const updated: ITask = {
-            ...task,
-            task_labels: [...taskLabels, { label_id: labelId }]
-        };
-        await createRequest({
-            url: `${API_URLS.TASKS}/${task.id}`,
-            method: HttpMethodEnum.PUT,
-            headers: { 'Content-Type': 'application/json' },
-            data: JSON.stringify(updated)
-        });
-    }
+    await createRequest({
+        url: `/api/rest/task_labels`,
+        method: HttpMethodEnum.POST,
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify({ 
+            task_id: Number(task.id), 
+            label_id: Number(labelId) 
+        })
+    });
 };
 
 export const removeTaskLabel = async (task: ITask, labelId: string) => {
-    const taskLabels = Array.isArray(task.task_labels) ? task.task_labels : [];
-    const updated: ITask = {
-        ...task,
-        task_labels: taskLabels.filter((l: ITaskLabel) => l.label_id !== labelId)
-    };
     await createRequest({
-        url: `${API_URLS.TASKS}/${task.id}`,
-        method: HttpMethodEnum.PUT,
-        headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify(updated)
+        url: `/api/rest/task_labels/${task.id}/${labelId}`,
+        method: HttpMethodEnum.DELETE,
     });
 }; 

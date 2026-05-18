@@ -1,10 +1,23 @@
-@import '../../styles/mixins.scss';
-
-.users_wrapper{
-  @include displayFlex($justifyContent: center, $flexDirection: column, $alignItems: center);
-  
+.form_title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
 }
 
-.user_wrapper{
-  color: #000;
+.form_desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.loading_state, .empty_state {
+  text-align: center;
+  padding: 3rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
